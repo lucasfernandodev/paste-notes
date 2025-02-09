@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import type { INote } from "../types/note.ts";
 
 export function expressResponseMock() {
   return {
@@ -15,4 +16,14 @@ export function expressResponseMock() {
       return this;
     }
   } as Response;
+}
+
+
+
+export const generateNoteMock = ({content,id,owner}: Partial<INote>)=>{
+  return {
+    id: id ?? new Date().toISOString(),
+    owner: owner ?? 'usertest',
+    content: content ??['first note']
+  }
 }
