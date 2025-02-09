@@ -1,4 +1,5 @@
 <img src="./docs/print1.png" alt="screenshot paste-note" />
+
 # Paste Note 📝
 
 Paste Note é uma aplicação Node.js que permite aos usuários adicionar e gerenciar anotações de forma rápida e intuitiva. A interface web permite colar textos diretamente (Ctrl + V) ou adicioná-los manualmente com um botão.
