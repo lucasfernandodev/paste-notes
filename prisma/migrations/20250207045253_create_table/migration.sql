@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE "Notes" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "owner" TEXT NOT NULL,
+    "content" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+);

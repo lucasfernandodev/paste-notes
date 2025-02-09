@@ -1,0 +1,132 @@
+.modal {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal .container {
+  background: #0f0f0f;
+  border-radius: 12px;
+  width: min(720px, calc(100% - 32px));
+  border: 1px solid #1f1f1f;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  & .header {
+    border-bottom: 1px solid #1f1f1f;
+    height: 64px;
+    width: 100%;
+    padding: 0px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & h2 {
+      font-size: 20px;
+    }
+
+    & .button-close-modal {
+      display: flex;
+      width: 34px;
+      height: 34px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      color: #2f2f2f;
+
+      &:hover {
+        color: #5f5f5f
+      }
+    }
+  }
+
+  & .content {
+    padding: 16px;
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 34px;
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+
+  & .footer {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #1f1f1f;
+    height: 64px;
+    width: 100%;
+    padding: 0px 16px;
+    justify-content: space-between;
+
+    & button {
+      height: 40px;
+      border: 1px solid #1f1f1f;
+      background: transparent;
+      color: #aaa;
+      width: 125px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: 250ms linear;
+
+      &:hover {
+        background: #1f1f1f;
+        color: #f1f1f1;
+      }
+    }
+
+    & .updateTime {
+      color: #6f6f6f;
+      font-size: 14px;
+    }
+
+    & .loading {
+      color: #6f6f6f;
+      font-size: 14px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+
+  .modal .footer {
+    & button {
+      font-size: 13px
+    }
+  }
+
+  .modal .footer .meta{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    & .updateTime {
+      font-size: 12px;
+    }
+
+    & .loading {
+      font-size: 12px;
+    }
+  }
+
+}
