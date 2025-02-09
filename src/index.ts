@@ -8,6 +8,7 @@ import { errorMiddleware } from './middlewares/errors.ts';
 import { UpdateNoteController } from './controllers/notes/update-note.ts';
 import { DeleteAllNoteController } from './controllers/notes/delete-all-note.ts';
 import { GetUserController } from './controllers/users/get-user.ts';
+import { CreateNoteUsecase } from './app/use-cases/notes/create-note.ts';
 const router = Router()
 
 
@@ -17,12 +18,12 @@ const port = process.env.PORT;
 app.use(express.json());
 
 app.use(express.static('public'))
-
+const createNoteUsecase = new CreateNoteUsecase()
 
 const createUserController = new CreateUserController();
 const getUserController = new GetUserController()
 
-const createNoteController = new CreateNoteController();
+const createNoteController = new CreateNoteController(createNoteUsecase);
 const listNoteController = new ListNoteController();
 const deleteNoteController = new DeleteNoteController();
 const updateNoteController = new UpdateNoteController()
