@@ -1,27 +1,24 @@
 import type { Request, Response } from "express";
-import { prisma } from "../../services/prisma.ts";
 import { z } from "zod";
 import { zParse } from "../../utils/z-parse.ts";
+import { ListNoteUsecase } from "../../app/use-cases/notes/list-notes.ts";
 
 const listNoteScheme = z.object({
   owner: z.string()
 })
 
 export class ListNoteController {
-  public handle = async (req: Request, res: Response) => {
-    const { owner } = await zParse(listNoteScheme, req, 'query'); 
+  constructor(private usecase: ListNoteUsecase) { }
 
-    const notes = await prisma.notes.findMany({
-      where: {
-        owner: owner
-      },
-      orderBy: {
-        id: "desc"
-      }
+  public handle = async (req: Request, res: Response) => {
+    const { owner } = await zParse(listNoteScheme, req, 'query');
+
+    const notes = await this.usecase.execute({
+      owner
     })
 
-    res.json({
-      notes: notes.map(note => ({ ...note, content: JSON.parse(note.content) }))
+    res.status(200).json({
+      notes: notes
     })
   }
 }
