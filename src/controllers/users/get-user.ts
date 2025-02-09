@@ -10,7 +10,7 @@ const ownerScheme = z.object({
 export class GetUserController {
   public handle = async (req: Request, res: Response) => {
     const { owner } = await zParse(ownerScheme, req, 'query');
-    const user = prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         id: owner
       }
