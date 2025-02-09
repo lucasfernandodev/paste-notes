@@ -11,6 +11,7 @@ import { GetUserController } from './controllers/users/get-user.ts';
 import { CreateNoteUsecase } from './app/use-cases/notes/create-note.ts';
 import { ListNoteUsecase } from './app/use-cases/notes/list-notes.ts';
 import { DeleteAllNoteUsecase } from './app/use-cases/notes/delete-all-notes.ts';
+import { DeleteNoteUsecase } from './app/use-cases/notes/delete-note.ts';
 const router = Router()
 
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.static('public'))
 const createNoteUsecase = new CreateNoteUsecase()
 const listNoteUsecase = new ListNoteUsecase()
+const deleteNoteUsecase = new DeleteNoteUsecase()
 const deleteAllNoteUsecase = new DeleteAllNoteUsecase()
 
 const createUserController = new CreateUserController();
@@ -29,7 +31,7 @@ const getUserController = new GetUserController()
 
 const createNoteController = new CreateNoteController(createNoteUsecase);
 const listNoteController = new ListNoteController(listNoteUsecase);
-const deleteNoteController = new DeleteNoteController();
+const deleteNoteController = new DeleteNoteController(deleteNoteUsecase);
 const updateNoteController = new UpdateNoteController()
 const deleteAllNoteController = new DeleteAllNoteController(deleteAllNoteUsecase);
 
