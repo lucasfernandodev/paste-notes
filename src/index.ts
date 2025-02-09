@@ -1,5 +1,5 @@
 import 'express-async-errors';
-import express, { Router } from 'express'; 
+import express, { Router } from 'express';
 import { CreateUserController } from './controllers/users/create-user.ts';
 import { CreateNoteController } from './controllers/notes/create-note.ts';
 import { ListNoteController } from './controllers/notes/list-note.ts';
@@ -7,6 +7,7 @@ import { DeleteNoteController } from './controllers/notes/delete-note.ts';
 import { errorMiddleware } from './middlewares/errors.ts';
 import { UpdateNoteController } from './controllers/notes/update-note.ts';
 import { DeleteAllNoteController } from './controllers/notes/delete-all-note.ts';
+import { GetUserController } from './controllers/users/get-user.ts';
 const router = Router()
 
 
@@ -15,18 +16,21 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-app.use(express.static('public')) 
+app.use(express.static('public'))
 
 
-const createUserController =  new CreateUserController();
+const createUserController = new CreateUserController();
+const getUserController = new GetUserController()
 
 const createNoteController = new CreateNoteController();
 const listNoteController = new ListNoteController();
 const deleteNoteController = new DeleteNoteController();
 const updateNoteController = new UpdateNoteController()
-const deleteAllNoteController = new DeleteAllNoteController()
+const deleteAllNoteController = new DeleteAllNoteController();
+
 
 router.post('/api/users', createUserController.handle);
+router.get('/api/users', getUserController.handle)
 router.post('/api/notes', createNoteController.handle)
 router.get('/api/notes', listNoteController.handle)
 router.delete('/api/notes', deleteNoteController.handle);
