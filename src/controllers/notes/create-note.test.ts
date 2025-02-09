@@ -54,7 +54,7 @@ describe('Create Note Controller', () => {
   it('Deve retornar error 400 caso alguma propriedades do schema esteja faltando', async () => {
     const res = mockResponse() as Response
     const req = {
-      body: { 
+      body: {
         note: {
           id: new Date().toISOString(),
           content: ['initial note']
@@ -78,10 +78,10 @@ describe('Create Note Controller', () => {
       }
     }
 
-    const controller = new CreateNoteController(usecaseMock); 
+    const controller = new CreateNoteController(usecaseMock);
     const callControllerWithoutOwner = async () => await controller.handle(req as any, res)
     const callControllerWithoutNote = async () => await controller.handle(reqWithoutNote as any, res)
-     
+
 
     assert.rejects(callControllerWithoutOwner, {
       name: 'Bad Request',
@@ -92,5 +92,40 @@ describe('Create Note Controller', () => {
       name: 'Bad Request',
       httpCode: 400
     })
+  })
+
+  it('Deve retornar com sucesso a nota criada', async () => {
+    const res = mockResponse() as Response
+    const req = {
+      body: {
+        owner: 'lucas',
+        note: {
+          id: new Date().toISOString(),
+          content: ['initial note']
+        }
+      }
+    }
+
+    const usecaseMock = {
+      execute: async (data: CreateNoteUsecaseData) => {
+        return {
+          id: data.note.id,
+          owner: data.owner,
+          content: data.note.content as unknown as string[]
+        }
+      }
+    }
+
+    const expectedReponse = {
+      note: {
+        id: req.body.note.id,
+        owner: req.body.owner,
+        content: req.body.note.content
+      }
+    }
+
+    const controller = new CreateNoteController(usecaseMock);
+    await controller.handle(req as any, res)
+    assert.deepEqual(expectedReponse, res['data'])
   })
 })
