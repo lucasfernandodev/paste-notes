@@ -165,3 +165,22 @@ export const deleteAllNote = async (owner) => {
   }
 }
 
+
+export const getOwner = async (owner) => {
+  try {
+    const response = await fetch(`/api/users?owner=${owner}`);
+    const data = await response.json();
+    if(!data.user) {
+      console.error('Não foi possivel recuperar informações do owner')
+      console.error(data?.message)
+      return null
+    };
+    
+    return data.user;
+  } catch (error) {
+    console.error('Não foi possivel recuperar informações do owner')
+    console.error(error)
+    return null;
+  }
+}
+

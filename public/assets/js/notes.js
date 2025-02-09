@@ -1,4 +1,4 @@
-import { listNotes, saveNote, deleteNote, updateNote, deleteAllNote } from './api.js';
+import { listNotes, saveNote, deleteNote, updateNote, deleteAllNote, getOwner } from './api.js';
 import { Editor } from './editor.js';
 import { loadingDialogConfigHandle } from './event-handlers/dialog-config.js';
 import { modalDeleteAllNotesHandle } from './event-handlers/modal-delete-all-notes.js';
@@ -12,6 +12,12 @@ async function core() {
   const owner = urlParams.get('owner');
 
   if (!owner) {
+    window.location.replace(`/`)
+  }
+
+  const isOwnerRegistred = await getOwner(owner);
+  console.log('isOwnerRegistred', isOwnerRegistred)
+  if(!isOwnerRegistred){
     window.location.replace(`/`)
   }
 
