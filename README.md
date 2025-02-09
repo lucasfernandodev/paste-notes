@@ -15,7 +15,7 @@ Paste Note é uma aplicação Node.js que permite aos usuários adicionar e gere
 
 - Node.js v22.13.1 ou superior
 
-## 🛠 Como executar
+## 📦 Como executar
 
 1. Clone este repositório:
   ```bash
