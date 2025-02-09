@@ -1,9 +1,7 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { zParse } from "../../utils/z-parse.ts";
-import { ServerError } from "../../errors/server-error.ts";
-import { prisma } from "../../services/prisma.ts";
-import { HttpStatusCode } from "../../utils/http-status-code.ts";
+import { UpdateNoteUsecase } from "../../app/use-cases/notes/update-note.ts";
 
 const updateNoteScheme = z.object({
   owner: z.string(),
@@ -14,38 +12,19 @@ const updateNoteScheme = z.object({
 })
 
 export class UpdateNoteController {
+  constructor(private usecase: UpdateNoteUsecase){}
   public handle = async (req: Request, res: Response) => {
-    const { note, owner } = await zParse(updateNoteScheme, req);
-    const updateAt = new Date().toISOString()
+    const { note, owner } = await zParse(updateNoteScheme, req); 
 
-    const isNote = await prisma.notes.findFirst({where: {id: note.id}});
-
-    if(!isNote){
-      res.status(HttpStatusCode.BAD_REQUEST).json({
-        error: true,
-        message: 'Nota não existe'
-      })
-      return
-    }
-
-    try {
-      await prisma.notes.update({
-        where: {
-          id: note.id,
-          owner: owner
-        },
-        data: {
-          content: JSON.stringify(note.content),
-          id: updateAt
-        }
-      })
-
-      res.json({
-        id: updateAt
-      })
-    } catch (error) {
-      console.error('Error Update Note: ', error)
-      throw new ServerError('Não foi possivel atualizar a nota');
-    }
+  
+    const updatedNote = await this.usecase.execute({
+      noteId: note.id,
+      owner: owner,
+      content: note.content
+    })
+   
+    res.status(200).json({
+      id: updatedNote.id
+    })
   }
 }

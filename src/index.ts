@@ -12,6 +12,7 @@ import { CreateNoteUsecase } from './app/use-cases/notes/create-note.ts';
 import { ListNoteUsecase } from './app/use-cases/notes/list-notes.ts';
 import { DeleteAllNoteUsecase } from './app/use-cases/notes/delete-all-notes.ts';
 import { DeleteNoteUsecase } from './app/use-cases/notes/delete-note.ts';
+import { UpdateNoteUsecase } from './app/use-cases/notes/update-note.ts';
 const router = Router()
 
 
@@ -25,6 +26,7 @@ const createNoteUsecase = new CreateNoteUsecase()
 const listNoteUsecase = new ListNoteUsecase()
 const deleteNoteUsecase = new DeleteNoteUsecase()
 const deleteAllNoteUsecase = new DeleteAllNoteUsecase()
+const updateNoteUsecase = new UpdateNoteUsecase()
 
 const createUserController = new CreateUserController();
 const getUserController = new GetUserController()
@@ -32,7 +34,7 @@ const getUserController = new GetUserController()
 const createNoteController = new CreateNoteController(createNoteUsecase);
 const listNoteController = new ListNoteController(listNoteUsecase);
 const deleteNoteController = new DeleteNoteController(deleteNoteUsecase);
-const updateNoteController = new UpdateNoteController()
+const updateNoteController = new UpdateNoteController(updateNoteUsecase)
 const deleteAllNoteController = new DeleteAllNoteController(deleteAllNoteUsecase);
 
 
