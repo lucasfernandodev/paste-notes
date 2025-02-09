@@ -3,29 +3,14 @@ import { CreateNoteController } from "./create-note.ts";
 import assert from "node:assert";
 import type { Response } from "express";
 import type { CreateNoteUsecaseData } from "../../app/use-cases/notes/create-note.ts";
+import { expressResponseMock } from "../../utils/mocks.ts";
 
-function mockResponse() {
-  return {
-    status: function (code) {
-      this.statusCode = code;
-      return this;
-    },
-    json: function (data) {
-      this.data = data;
-      return this;
-    },
-    send: function (data) {
-      this.data = data;
-      return this;
-    }
-  };
-}
+
 
 describe('Create Note Controller - Handling Note Creation Requests', () => {
 
   it('Should successfully create a new note and return status 201', async () => {
-
-    const res = mockResponse() as Response
+    const response = expressResponseMock()
     const req = {
       body: {
         owner: 'lucas',
@@ -47,12 +32,12 @@ describe('Create Note Controller - Handling Note Creation Requests', () => {
     }
 
     const controller = new CreateNoteController(usecaseMock);
-    await controller.handle(req as any, res)
-    assert.strictEqual(res.statusCode, 201)
+    await controller.handle(req as any, response)
+    assert.strictEqual(response.statusCode, 201)
   })
 
   it('Should return a 400 error if any required schema property is missing', async () => {
-    const res = mockResponse() as Response
+    const res = expressResponseMock()
     const req = {
       body: {
         note: {
@@ -95,7 +80,7 @@ describe('Create Note Controller - Handling Note Creation Requests', () => {
   })
 
   it('Should successfully return the details of the newly created note', async () => {
-    const res = mockResponse() as Response
+    const res = expressResponseMock()
     const req = {
       body: {
         owner: 'lucas',
