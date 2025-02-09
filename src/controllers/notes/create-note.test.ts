@@ -21,9 +21,9 @@ function mockResponse() {
   };
 }
 
-describe('Create Note Controller', () => {
+describe('Create Note Controller - Handling Note Creation Requests', () => {
 
-  it('Deve criar uma nova nota com sucesso e retornar o status 201', async () => {
+  it('Should successfully create a new note and return status 201', async () => {
 
     const res = mockResponse() as Response
     const req = {
@@ -51,7 +51,7 @@ describe('Create Note Controller', () => {
     assert.strictEqual(res.statusCode, 201)
   })
 
-  it('Deve retornar error 400 caso alguma propriedades do schema esteja faltando', async () => {
+  it('Should return a 400 error if any required schema property is missing', async () => {
     const res = mockResponse() as Response
     const req = {
       body: {
@@ -94,7 +94,7 @@ describe('Create Note Controller', () => {
     })
   })
 
-  it('Deve retornar com sucesso a nota criada', async () => {
+  it('Should successfully return the details of the newly created note', async () => {
     const res = mockResponse() as Response
     const req = {
       body: {
