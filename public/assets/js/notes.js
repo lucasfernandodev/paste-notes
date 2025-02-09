@@ -16,8 +16,8 @@ async function core() {
   }
 
   const isOwnerRegistred = await getOwner(owner);
-  console.log('isOwnerRegistred', isOwnerRegistred)
-  if(!isOwnerRegistred){
+
+  if (!isOwnerRegistred) {
     window.location.replace(`/`)
   }
 
@@ -32,13 +32,13 @@ async function core() {
 
     const notes = await listNotes(owner);
 
-    if(notes.length === 0 ){
+    if (notes.length === 0) {
       board.innerHTML = '';
-      const message = createEl('p', 'Nada por aqui! Crie uma nova nota ou manda um Ctrl + V pra começar. 🚀', {class: 'empty-message'})
+      const message = createEl('p', 'Nada por aqui! Crie uma nova nota ou manda um Ctrl + V pra começar. 🚀', { class: 'empty-message' })
       board.appendChild(message)
-    }else{
+    } else {
       const isMessage = board.querySelector('.empty-message')
-      if(isMessage){
+      if (isMessage) {
         board.removeChild(isMessage)
       }
     }
@@ -103,7 +103,7 @@ async function core() {
   }
 
   $editor.onDelete(async (id) => {
-    await deleteNote(owner, id)
+    await deleteNote(owner, id) 
     await fetchAndRenderNotes()
   })
 

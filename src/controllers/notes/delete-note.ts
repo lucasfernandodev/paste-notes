@@ -17,6 +17,6 @@ export class DeleteNoteController {
       noteId: id,
     })
     
-    res.status(204)
+    res.status(204).end()
   }
 }
