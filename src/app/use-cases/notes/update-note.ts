@@ -2,7 +2,7 @@ import { HTTP400Error } from "../../../errors/BadRequest.ts";
 import { ServerError } from "../../../errors/server-error.ts";
 import { prisma } from "../../../services/prisma.ts";
 
-interface UpdateNoteUsecaseData {
+export interface UpdateNoteUsecaseData {
   noteId: string;
   owner: string;
   content: string[]
@@ -38,7 +38,11 @@ export class UpdateNoteUsecase {
         }
       })
 
-      return note;
+      return {
+        id: note.id,
+        content: JSON.parse(note.content) as string[],
+        owner: note.owner
+      };
 
     } catch (error) {
       console.error('Error Update Note: ', error)
