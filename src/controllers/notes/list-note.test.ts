@@ -4,7 +4,7 @@ import type { ListNoteUsecaseData } from "../../app/use-cases/notes/list-notes.t
 import { ListNoteController } from "./list-note.ts";
 import assert from "node:assert";
 
-describe('List Notes', async () => {
+describe('List Notes Controller', async () => {
 
   it('Should return success (statusCode 200) if the owner is valid', async () => {
     const res = expressResponseMock()
