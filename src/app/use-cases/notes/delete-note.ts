@@ -2,7 +2,7 @@ import { HTTP400Error } from "../../../errors/BadRequest.ts";
 import { ServerError } from "../../../errors/server-error.ts";
 import { prisma } from "../../../services/prisma.ts";
 
-interface DeleteNoteUsecaseData{
+export interface DeleteNoteUsecaseData{
   owner: string;
   noteId: string;
 }

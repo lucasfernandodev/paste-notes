@@ -14,6 +14,9 @@ export function expressResponseMock() {
     send: function (data?: string ) {
       this.data = data;
       return this;
+    },
+    end: function (){
+      return this;
     }
   } as Response;
 }
