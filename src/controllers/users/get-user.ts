@@ -17,7 +17,7 @@ export class GetUserController {
       id: owner
     })
 
-    res.json({
+    res.status(200).json({
       user: user
     })
   }

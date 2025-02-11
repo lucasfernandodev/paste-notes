@@ -5,7 +5,7 @@ export interface GetUserUsecaseData {
 }
 
 export class GetUserUsecase {
-  public execute = async ({id}: GetUserUsecaseData) => {
+  public execute = async ({ id }: GetUserUsecaseData) => {
     const user = await prisma.user.findFirst({
       where: {
         id: id
