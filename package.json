@@ -2,14 +2,14 @@
   "name": "paste-notes",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "type": "module",
   "engines": {
     "node": ">=22.13.1"
   },
   "scripts": {
     "dev": "node --experimental-transform-types --experimental-strip-types --env-file=.env --watch ./src/index.ts",
-    "test": "node --experimental-transform-types --experimental-strip-types --test   "
+    "test": "NODE_NO_WARNINGS=1 node --experimental-transform-types --experimental-strip-types --test   "
   },
   "keywords": [],
   "author": "",

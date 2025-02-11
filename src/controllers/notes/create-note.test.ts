@@ -1,7 +1,6 @@
 import { describe, it } from "node:test";
 import { CreateNoteController } from "./create-note.ts";
-import assert from "node:assert";
-import type { Response } from "express";
+import assert from "node:assert"; 
 import type { CreateNoteUsecaseData } from "../../app/use-cases/notes/create-note.ts";
 import { expressResponseMock } from "../../utils/mocks.ts";
 

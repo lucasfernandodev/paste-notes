@@ -5,6 +5,7 @@ export interface AuthenticateOrCreateUserUsecaseData {
 }
 export class AuthenticateOrCreateUserUsecase {
   public execute = async ({ id }: AuthenticateOrCreateUserUsecaseData) => {
+    
     const isUser = await prisma.user.findFirst({
       where: {
         id: id
@@ -22,5 +23,5 @@ export class AuthenticateOrCreateUserUsecase {
     }
 
     return isUser
-  } 
+  }
 }
