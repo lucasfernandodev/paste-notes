@@ -35,19 +35,21 @@ button {
   justify-content: center;
   gap: 32px;
 
+
   & h1 {
     font-size: 64px;
-    max-width: 600px;
+    max-width: min(600px, calc(100% - 32px));
     text-align: center;
   }
 
   & form {
     width: 100%;
-    max-width: 600px;
+    max-width: min(600px, calc(100% - 32px));
   }
 
   & .form-group {
     position: relative;
+    width: 100%;
   }
 
   & .form-group input {
@@ -61,7 +63,7 @@ button {
     padding: 0px 16px;
 
     &:focus {
-      outline: 2px solid #3f3f3f;
+      outline: 2px solid #f1f1f1;
     }
   }
 
@@ -93,8 +95,26 @@ button {
 
   & p {
     color: #6f6f6f;
+    text-align: center;
   }
 }
+
+@media (max-width: 780px) {
+  .homepage {
+    & h1 {
+      font-size: 54px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .homepage {
+    & h1 {
+      font-size: 42px;
+    }
+  }
+}
+
 
 .notes {
   overflow-x: hidden;
@@ -102,7 +122,7 @@ button {
   max-height: 100vh;
   padding: 32px;
 
-  & .empty-message{
+  & .empty-message {
     color: #4f4f4f;
   }
 
@@ -139,7 +159,7 @@ button {
       background: linear-gradient(to right bottom, #f1f1f1, #bababa);
     }
 
-    &:active{
+    &:active {
       outline: 2px solid #f1f1f1;
       outline-offset: 2px;
     }
@@ -162,7 +182,7 @@ button {
   align-items: flex-start;
   height: 110px;
   max-width: 600px;
-  overflow: hidden; 
+  overflow: hidden;
   line-height: 28px;
   animation: fadeInUp 250ms linear forwards;
   position: relative;
@@ -224,6 +244,7 @@ button {
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
@@ -234,7 +255,7 @@ button {
   }
 }
 
-.dialog-menu{
+.dialog-menu {
   position: fixed;
   bottom: 92px;
   right: 32px;
@@ -244,27 +265,27 @@ button {
   border-radius: 12px 12px 0px 12px;
   display: none;
 
-  &.open{
+  &.open {
     display: flex;
   }
 
-  & .menu{
+  & .menu {
     width: 100%;
     list-style: none;
     display: flex;
     flex-direction: column;
   }
 
-  & .menu .options{
+  & .menu .options {
     height: 44px;
     width: 100%;
 
-    &:first-child{
+    &:first-child {
       border-bottom: 1px solid #222;
     }
   }
 
-  & .menu .options > *{
+  & .menu .options>* {
     width: 100%;
     height: 100%;
     background: none;
@@ -276,13 +297,13 @@ button {
     padding: 0px 12px;
     border: 0px;
 
-    &:hover{
+    &:hover {
       color: #f1f1f1;
     }
   }
 }
 
-.modal-confirm{
+.modal-confirm {
   position: fixed;
   inset: 0;
   display: none;
@@ -293,11 +314,11 @@ button {
   overflow: hidden;
   background: rgba(0, 0, 0, 0.8);
 
-  &.open{
+  &.open {
     display: flex;
   }
 
-  & .wrapper{
+  & .wrapper {
     display: flex;
     flex-direction: column;
     background: #0f0f0f;
@@ -306,7 +327,7 @@ button {
     width: 100%;
     max-width: min(550px, calc(100% - 32px));
 
-    .container{
+    .container {
       width: 100%;
       padding: 24px 16px;
       border-top: 1px solid #1f1f1f;
@@ -314,7 +335,7 @@ button {
     }
 
     & .header,
-    & .footer{
+    & .footer {
       padding: 16px;
       width: 100%;
       height: 64px;
@@ -322,11 +343,11 @@ button {
       align-items: center;
       justify-content: space-between;
 
-      & h2{
+      & h2 {
         font-size: 20px;
       }
 
-      &.header button{
+      &.header button {
         display: flex;
         width: 34px;
         height: 34px;
@@ -338,18 +359,18 @@ button {
         justify-content: center;
         background: none;
         color: #2f2f2f;
-  
+
         &:hover {
           color: #5f5f5f
         }
 
       }
 
-      &.footer{
+      &.footer {
         justify-content: flex-end;
         gap: 8px;
 
-        & button{
+        & button {
           height: 38px;
           width: 120px;
           border-radius: 6px;
@@ -358,20 +379,20 @@ button {
           overflow: hidden;
           border: 1px solid transparent;
 
-          &.btn-confirm[disable=true]{
+          &.btn-confirm[disable=true] {
             user-select: none;
             pointer-events: none;
             cursor: default;
             opacity: 0.5;
           }
 
-          &:first-child{
+          &:first-child {
             background: transparent;
             color: #aaa;
             border: 1px solid #1F1F1F;
             transition: 250ms linear;
 
-            &:hover{
+            &:hover {
               background: #1F1F1F;
               color: #f1f1f1;
             }
