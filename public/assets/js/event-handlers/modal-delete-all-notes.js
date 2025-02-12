@@ -1,23 +1,24 @@
+import { Toast } from "../components/toast.js";
 import { deleteAllNote } from "../core/api.js";
 
 export const modalDeleteAllNotesHandle = async (owner, {onSuccess = async () => {}}) => {
 
-  const modalConfigDelete = document.querySelector('.modal-confirm');
-  const buttonCloseModalConfigDelete = modalConfigDelete.querySelector('.button-close-modal')
+  const modalConfirmDelete = document.querySelector('.modal-confirm');
+  const buttonCloseModalConfigDelete = modalConfirmDelete.querySelector('.button-close-modal')
   const buttonOpenDeleteAllnNotesModal = document.getElementById('button-delete-all-notes');
-  const cancelDeleteAllNoteButton = modalConfigDelete.querySelector('.btn-cancel');
-  const buttonDeleteAllNote = modalConfigDelete.querySelector('.btn-confirm');
+  const buttonCancel = modalConfirmDelete.querySelector('.btn-cancel');
+  const buttonDeleteAllNote = modalConfirmDelete.querySelector('.btn-confirm');
 
   buttonOpenDeleteAllnNotesModal.addEventListener('click', () => {
-    modalConfigDelete.classList.toggle('open')
+    modalConfirmDelete.classList.toggle('open')
   })
 
   buttonCloseModalConfigDelete.addEventListener('click', () => {
-    modalConfigDelete.classList.toggle('open')
+    modalConfirmDelete.classList.toggle('open')
   })
 
-  cancelDeleteAllNoteButton.addEventListener('click', () => {
-    modalConfigDelete.classList.toggle('open')
+  buttonCancel.addEventListener('click', () => {
+    modalConfirmDelete.classList.toggle('open')
   })
 
   buttonDeleteAllNote.addEventListener('click', async () => {
@@ -29,15 +30,17 @@ export const modalDeleteAllNotesHandle = async (owner, {onSuccess = async () => 
     if (isDeletedAll) {
       buttonDeleteAllNote.setAttribute('disable', 'false');
       buttonDeleteAllNote.textContent = 'Excluir'
-      modalConfigDelete.classList.toggle('open')
+      modalConfirmDelete.classList.toggle('open')
       await onSuccess()
       return;
     }
 
     buttonDeleteAllNote.setAttribute('disable', 'false');
     buttonDeleteAllNote.textContent = 'Excluir'
-    modalConfigDelete.classList.toggle('open')
+    modalConfirmDelete.classList.toggle('open')
 
-    alert('Não foi possivel deletar todas as notas')
+    const toast = new Toast()
+
+    toast.add('Não foi possivel deletar todas as notas')
   })  
 }
