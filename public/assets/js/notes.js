@@ -31,7 +31,7 @@ class Notes {
     const retrievedNotes = new Map((await listNotes(this.owner) || []).map(n => [n.id, n.content]));
 
     if (retrievedNotes.size === 0) {
-      this.manager.updateUI([]);
+      this.manager.updateUI([], false, true);
       return;
     }
 
@@ -47,7 +47,8 @@ class Notes {
       }
     })
 
-    this.manager.updateUI(updates, currentNotesId.size !== 0 ? true : false)
+
+    this.manager.updateUI(updates, currentNotesId.size !== 0 ? true : false, retrievedNotes.size === 0)
   }
 
 
@@ -130,6 +131,9 @@ class Notes {
   _init = () => {
     this._setupEvents();
     this._reloadNotes()
+    setInterval(() => {
+      this._reloadNotes()
+    }, 5000)
   }
 }
 

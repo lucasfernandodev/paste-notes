@@ -101,11 +101,11 @@ export class NotesManager {
 
 
 
-  updateUI = (notes = [], hasExistingNotes = false) => {
+  updateUI = (notes = [], hasExistingNotes = false, isClear = false) => {
 
     this._removeEmptyMessage()
 
-    if (notes.length === 0) this._addEmptyMessage()
+    if (isClear) this._addEmptyMessage()
 
     for (const note of notes) {
 
