@@ -85,6 +85,7 @@ export class NotesManager {
     const noteHTML = createNote(content, id, {
       onClick: ({ currentTarget: note }) => {
         this.$editor.open(note.id, Array.from(note.children))
+        note.blur()
       }
     });
 

@@ -39,6 +39,7 @@ export class Editor {
     this.updateAtElement.textContent = `Atualizado em ${timeLocale}`
 
     content.map(p => editor.appendChild(createEl('p', p.textContent, {})))
+    editor.focus()
   }
 
   onUpdate = (cb) => {
