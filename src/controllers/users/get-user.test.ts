@@ -1,4 +1,3 @@
-
 import { it, describe } from "node:test";
 import { expressResponseMock } from "../../utils/mocks.ts";
 import type { GetUserUsecaseData } from "../../app/use-cases/users/get-user.ts";

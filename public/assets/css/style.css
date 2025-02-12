@@ -402,3 +402,73 @@ button {
     }
   }
 }
+
+.toast{
+  background: #000;
+  position: fixed;
+  right: 32px;
+  top: 64px;
+  border: 1px solid  #1f1f1f;
+  z-index: 99999;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  animation: 250ms linear;
+
+  &::before{
+    content: "";
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: #303030;
+    height: 2px;
+  }
+
+  &::after{
+    content: "";
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: #afafaf;
+    height: 2px;
+    z-index: 1;
+    overflow: hidden;
+    animation: slideout 2s linear forwards;
+  }
+
+  & .inner{
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    color: #ff7979dd;
+  }
+
+  & button{
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #3f3f3f;
+
+    &:hover{
+      color: #dfdfdf;
+    }
+  }
+}
+
+@keyframes slideout {
+  0%{
+    width: 100%;
+  }
+
+  100%{
+    width: 0%;
+  }
+}

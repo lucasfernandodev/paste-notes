@@ -1,7 +1,6 @@
-import { deleteAllNote } from "../api.js";
+import { deleteAllNote } from "../core/api.js";
 
 export const modalDeleteAllNotesHandle = async (owner, {onSuccess = async () => {}}) => {
-
 
   const modalConfigDelete = document.querySelector('.modal-confirm');
   const buttonCloseModalConfigDelete = modalConfigDelete.querySelector('.button-close-modal')

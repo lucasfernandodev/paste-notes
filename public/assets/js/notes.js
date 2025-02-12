@@ -1,13 +1,140 @@
-import { listNotes, saveNote, deleteNote, updateNote, deleteAllNote, getOwner } from './api.js';
-import { Editor } from './editor.js';
+import { listNotes, saveNote, deleteNote, updateNote, getOwner } from './core/api.js';
+import { Editor } from './core/editor.js';
 import { loadingDialogConfigHandle } from './event-handlers/dialog-config.js';
 import { modalDeleteAllNotesHandle } from './event-handlers/modal-delete-all-notes.js';
-import { createEl } from './main.js';
-import { createNote } from './notes-manager.js';
+import { NotesManager } from './core/notes-manager.js';
 
-async function core() {
-  const buttonAddnote = document.querySelector('#add-note');
-  const board = document.querySelector('#notes-list');
+class Notes {
+  $editor = new Editor();
+  buttonAddNote = document.querySelector('#add-note');
+  manager = new NotesManager(this.$editor);
+
+  constructor(owner) {
+    this.owner = owner;
+    this._init()
+  }
+
+
+
+
+  _attach = (el, event, cb) => {
+    el.addEventListener(event, cb);
+  }
+
+
+
+
+  _reloadNotes = async () => {
+    const updates = [];
+    const elements = document.querySelectorAll('.container-notes')
+    const currentNotesId = new Set([...elements].map(n => n.id));
+    const retrievedNotes = new Map((await listNotes(this.owner) || []).map(n => [n.id, n.content]));
+
+    if (retrievedNotes.size === 0) {
+      this.manager.updateUI([]);
+      return;
+    }
+
+    currentNotesId.forEach(id => {
+      if (!retrievedNotes.has(id)) {
+        updates.push({ id, status: 'deleted' });
+      }
+    });
+
+    retrievedNotes.forEach((content, id) => {
+      if (!currentNotesId.has(id)) {
+        updates.push({ id, content, status: 'new' });
+      }
+    })
+
+    this.manager.updateUI(updates, currentNotesId.size !== 0 ? true : false)
+  }
+
+
+
+
+  _addNewNote = async () => {
+    await saveNote({
+      owner: this.owner,
+      note: {
+        id: new Date().toISOString(),
+        content: ['Nota criada, continuar editando']
+      }
+    })
+
+    await this._reloadNotes()
+  }
+
+
+
+  _addNewNoteFromPaste = async (ev) => {
+    if (this.$editor.isOpen()) return;
+
+    ev.preventDefault();
+    const clipboardData = ev?.clipboardData || window?.clipboardData;
+    const pastedText = clipboardData.getData('text/plain');
+
+    if (!pastedText) return;
+
+    await saveNote({
+      owner: this.owner,
+      note: {
+        id: new Date().toISOString(),
+        content: pastedText.split('\n')
+      }
+    })
+
+    await this._reloadNotes()
+  }
+
+
+
+
+  _updateNote = async (noteId, content) => {
+    const data = await updateNote({
+      owner: this.owner,
+      note: {
+        id: noteId,
+        content: content
+      }
+    })
+    await this._reloadNotes()
+    return data.id
+  }
+
+
+
+
+  _deleteNote = async (id) => {
+    await deleteNote(this.owner, id)
+    await this._reloadNotes()
+  }
+
+
+  _setupEvents = () => {
+    this._attach(this.buttonAddNote, 'click', this._addNewNote)
+    this._attach(window, 'paste', this._addNewNoteFromPaste)
+    this.$editor.onUpdate(async (noteId, content) => this._updateNote(noteId, content))
+    this.$editor.onDelete(async (id) => this._deleteNote(id))
+    modalDeleteAllNotesHandle(this.owner, {
+      onSuccess: this._reloadNotes
+    })
+
+    // Open Menu
+    loadingDialogConfigHandle()
+  }
+
+
+
+
+  _init = () => {
+    this._setupEvents();
+    this._reloadNotes()
+  }
+}
+
+
+window.onload = async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const owner = urlParams.get('owner');
 
@@ -21,118 +148,6 @@ async function core() {
     window.location.replace(`/`)
   }
 
-  const $editor = new Editor();
+  new Notes(owner)
 
-  const fetchAndRenderNotes = async () => {
-    document.querySelector('.notes').scrollTo({ top: 0, left: 0, behavior: "smooth" });
-
-    const existingNotes = new Map(Array.from(
-      board.querySelectorAll('.container-notes')).map(el => [el.id, el])
-    )
-
-    const notes = await listNotes(owner);
-
-    if (notes.length === 0) {
-      board.innerHTML = '';
-      const message = createEl('p', 'Nada por aqui! Crie uma nova nota ou manda um Ctrl + V pra começar. 🚀', { class: 'empty-message' })
-      board.appendChild(message)
-    } else {
-      const isMessage = board.querySelector('.empty-message')
-      if (isMessage) {
-        board.removeChild(isMessage)
-      }
-    }
-
-    const hasExistingNotes = existingNotes.size > 0
-
-    for (const note of notes) {
-
-      if (!existingNotes.has(note.id)) {
-
-        const noteHTML = createNote(note.content, note.id, {
-          onClick: ({ currentTarget: note }) => {
-            $editor.open(note.id, Array.from(note.children))
-          }
-        });
-
-        hasExistingNotes ? board.prepend(noteHTML) : board.appendChild(noteHTML)
-      } else {
-        existingNotes.delete(note.id)
-      }
-    }
-
-    for (const [id, element] of existingNotes) {
-      if (board.contains(element)) { // Verifica se o nó ainda existe no board
-        board.removeChild(element);
-      }
-    }
-  }
-
-  const persistNoteFromPaste = async (ev) => {
-
-    if ($editor.isOpen()) return;
-
-    ev.preventDefault();
-    const clipboardData = ev?.clipboardData || window?.clipboardData;
-    const pastedText = clipboardData.getData('text/plain');
-
-    if (!pastedText) return;
-
-    await saveNote({
-      owner,
-      note: {
-        id: new Date().toISOString(),
-        content: pastedText.split('\n')
-      }
-    })
-
-
-    await fetchAndRenderNotes()
-  }
-
-  const persistNote = async () => {
-    await saveNote({
-      owner,
-      note: {
-        id: new Date().toISOString(),
-        content: ['Nota criada, continuar editando']
-      }
-    })
-
-    await fetchAndRenderNotes()
-  }
-
-  $editor.onDelete(async (id) => {
-    await deleteNote(owner, id) 
-    await fetchAndRenderNotes()
-  })
-
-  $editor.onUpdate(async (noteId, content) => {
-    const data = await updateNote({
-      owner,
-      note: {
-        id: noteId,
-        content: content
-      }
-    })
-
-    await fetchAndRenderNotes()
-    return data.id
-  })
-
-  buttonAddnote.addEventListener('click', persistNote)
-  document.addEventListener('paste', persistNoteFromPaste)
-
-
-
-  loadingDialogConfigHandle()
-  modalDeleteAllNotesHandle(owner, {
-    onSuccess: fetchAndRenderNotes
-  })
-
-  await fetchAndRenderNotes()
 }
-
-core().catch(console.error)
-
-

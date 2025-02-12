@@ -1,4 +1,4 @@
-import { createEl, debounce } from "./main.js";
+import { createEl, debounce } from "./utils.js";
 
 export class Editor {
   modal = document.querySelector('.modal');
@@ -85,6 +85,40 @@ export class Editor {
   constructor() {
     this.buttonCloseModal.addEventListener('click', this.close)
     this.editor.addEventListener('input', debounce(() => this.handleInput(), 1000));
+
+    this.editor.addEventListener("paste", (event) => {
+      event.preventDefault(); // Evita a ação padrão para processarmos o conteúdo
+
+      // Capturar os dados do clipboard
+      const clipboardData = event.clipboardData || window.clipboardData;
+      let pastedText = clipboardData.getData("text/html") || clipboardData.getData("text/plain");
+
+      if (!pastedText) return;
+
+      // Transformar <br> e \n em parágrafos <p>
+      const lines = pastedText.split("\n")
+        .filter(line => line.trim() !== "");
+
+      // Criar fragmento de documento para eficiência
+      const fragment = document.createDocumentFragment();
+      lines.forEach(line => {
+        const p = document.createElement("p");
+        p.textContent = line;
+        fragment.appendChild(p);
+      });
+
+      // Inserir no local correto (onde o cursor está)
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.deleteContents(); // Remove qualquer seleção antes de colar
+        range.insertNode(fragment); 
+      }
+
+      debounce(this.handleInput.bind(this), 1000)();
+    });
+
+
     this.buttonDeleteNote.addEventListener('click', this.handleDelete)
   }
 }
