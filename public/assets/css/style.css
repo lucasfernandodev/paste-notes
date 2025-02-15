@@ -128,7 +128,7 @@ button {
 
   & #notes-list {
     display: flex;
-    gap: 24px;
+    gap: 32px;
     flex-wrap: wrap;
     height: 100%;
   }
@@ -174,60 +174,75 @@ button {
 .container-notes {
   border: 2px solid #101010;
   background: #050505;
-  padding: 16px;
-  width: fit-content;
-  border-radius: 14px;
-  min-width: min(400px, calc(100% - 32px));
+  width: calc((100% - 64px) / 3);
+  border-radius: 14px; 
   display: flex;
   align-items: flex-start;
   height: 110px;
-  max-width: 600px;
   overflow: hidden;
   line-height: 28px;
   animation: fadeInUp 250ms linear forwards;
   position: relative;
+  flex-direction: column;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 1);
 
-  & .button-copy {
-    position: absolute;
-    bottom: 16px;
-    right: -200px;
+  & .header{
+    flex-shrink: 0;
+    height: 28px;
+    width: 100%;
+    background-color: #101010;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0px 16px;
 
-    height: 38px;
-    min-width: 132px;
-    background: linear-gradient(to right, #f1f1f1, #ccc);
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    color: #0f0f0f;
-    border: 2px solid #000;
-    transition: 320ms linear;
-    opacity: 0;
 
-    &:hover {
-      right: 16px !important;
-      opacity: 1;
+    & button{
+      height: 16px;
+      line-height: 16px;
+      font-size: 12px;
+      color: #8f8f8f;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      position: relative;
+      top: -1px;
 
-    }
+      & > svg{
+        width: 13px;
+        height: 13px;
+      }
 
-    &:active {
-      animation: pulse 250ms forwards
+      &:hover{
+        color: #cdcdcd;
+      }
+
+      &[disabled=true]{
+        cursor: default;
+        user-select: none;
+        pointer-events: none;
+
+        &:hover{
+          color: inherit;
+        }
+      }
     }
   }
 
-  & .note-content {
+  & .content {
     height: 100%;
     width: 100%;
     color: #aaa;
+    padding: 16px;
 
     &:focus,
     &:active {
       outline: none;
     }
-  }
-
-  & .note-content:hover+.button-copy {
-    right: 16px !important;
-    opacity: 1;
   }
 }
 
@@ -244,7 +259,6 @@ button {
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);

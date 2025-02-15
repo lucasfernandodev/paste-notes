@@ -2,12 +2,12 @@ import { listNotes, saveNote, deleteNote, updateNote, getOwner } from './core/ap
 import { Editor } from './core/editor.js';
 import { loadingDialogConfigHandle } from './event-handlers/dialog-config.js';
 import { modalDeleteAllNotesHandle } from './event-handlers/modal-delete-all-notes.js';
-import { NotesManager } from './core/notes-manager.js';
+import { CanvasManager } from './core/canvas-manager.js';
 
 class Notes {
   $editor = new Editor();
   buttonAddNote = document.querySelector('#add-note');
-  manager = new NotesManager(this.$editor);
+  manager = new CanvasManager(this.$editor);
 
   constructor(owner) {
     this.owner = owner;
@@ -48,7 +48,11 @@ class Notes {
     })
 
 
-    this.manager.updateUI(updates, currentNotesId.size !== 0 ? true : false, retrievedNotes.size === 0)
+    this.manager.updateUI(
+      updates,
+      currentNotesId.size !== 0 ? true : false,
+      retrievedNotes.size === 0
+    )
   }
 
 

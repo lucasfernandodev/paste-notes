@@ -3,12 +3,17 @@ export const createEl = (type, content, attributes = {}) => {
   el.textContent = content || '';
 
   for (const [label, value] of Object.entries(attributes)) {
+    if (label.startsWith('on') && typeof value === 'function') {
+      el[label] = value
+      continue
+    }
+
     el.setAttribute(label, value)
   }
 
   return el;
 }
- 
+
 export function debounce(func, delay) {
   let timeoutId;
   return function (...args) {
@@ -23,7 +28,7 @@ export function debounce(func, delay) {
 export async function copyToClipboard(textToCopy) {
   // Navigator clipboard api needs a secure context (https)
   if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(textToCopy);
+    await navigator.clipboard.writeText(textToCopy);
   } else {
 
     const t = createEl('textarea', textToCopy, {
@@ -35,16 +40,16 @@ export async function copyToClipboard(textToCopy) {
       }
     })
 
-      document.body.prepend(t);
-      t.select();
+    document.body.prepend(t);
+    t.select();
 
-      try {
-          document.execCommand('copy');
-      } catch (error) {
-          console.error(error);
-      } finally {
-          t.remove();
-      }
+    try {
+      document.execCommand('copy');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      t.remove();
+    }
   }
 }
 
@@ -69,11 +74,11 @@ export class ApiError extends Error {
 
 export const safeFetch = async (url, options = {}) => {
   try {
-    const response = await fetch(url, options); 
+    const response = await fetch(url, options);
     // Tenta converter a resposta para JSON
 
-    if(response.status === 204) return true;
-    
+    if (response.status === 204) return true;
+
     const data = await response.json();
 
     // Se o response não for ok (status HTTP fora da faixa 200-299), lança um erro personalizado
@@ -97,4 +102,20 @@ export const safeFetch = async (url, options = {}) => {
     // Para outros tipos de erro, lança um erro genérico
     throw new Error('Erro ao processar solicitação');
   }
+}
+
+
+export const mapperNotesToContent = (nodes) => {
+  let content = '';
+  const isMultiplesParagraphs = Array.from(nodes).some(el => el.nodeType === 1);
+  if (isMultiplesParagraphs) {
+    content = Array.from(nodes)
+      .map(el => el.innerText.trim())
+      .filter(Boolean)
+      .join('\n')
+  } else {
+    content = nodes.innerText.trim();
+  }
+
+  return content;
 }
