@@ -1,5 +1,5 @@
 <h1 align="center">
-<img style="vertical-align: middle;" src="./public/assets/images/favicon.svg" width="42px" alt="screenshot paste-note" />
+<img align="absmiddle" src="./public/assets/images/favicon.svg" width="42px" alt="screenshot paste-note" />
 Paste Note
 </h1>
 
