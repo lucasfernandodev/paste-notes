@@ -1,20 +1,13 @@
-import type { Request, Response } from "express";
-import { z } from "zod";
+import type { Request, Response } from "express"; 
 import { zParse } from "../../utils/z-parse.ts";
 import { UpdateNoteUsecase } from "../../app/use-cases/notes/update-note.ts";
-
-const updateNoteScheme = z.object({
-  owner: z.string(),
-  note: z.object({
-    id: z.string(),
-    content: z.array(z.string())
-  })
-})
+import { updateNoteSchema } from "../../schemas/notes/update-note.ts";
+ 
 
 export class UpdateNoteController {
   constructor(private usecase: UpdateNoteUsecase){}
   public handle = async (req: Request, res: Response) => {
-    const { note, owner } = await zParse(updateNoteScheme, req); 
+    const { note, owner } = await zParse(updateNoteSchema, req); 
 
   
     const updatedNote = await this.usecase.execute({
