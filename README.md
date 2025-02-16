@@ -47,7 +47,7 @@ Paste Note é uma aplicação Node.js que permite aos usuários adicionar e gere
 
 ## 🖼️ Capturas
 <p style="text-align: center;">
-<img src="./docs/homepage.png" alt="Paste Note - Homepage" width="33.3%" />
-<img src="./docs/notes-empty.png" alt="Paste Note - Notas" width="33.3%" />
-<img src="./docs/with-notes.png" alt="Paste Note - Notas" width="33.3%" />
+<img src="./docs/homepage.png" alt="Paste Note - Homepage" width="33%" />
+<img src="./docs/notes-empty.png" alt="Paste Note - Notas" width="33%" />
+<img src="./docs/with-notes.png" alt="Paste Note - Notas" width="33%" />
 </p>
